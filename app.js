@@ -231,9 +231,17 @@ function getDateForDay(day) {
     const currentDayOfWeek = today.getDay();
     const targetDayOfWeek = dayMap[day];
     
+    // Calculate days to add, treating Monday as start of week
     let daysToAdd = targetDayOfWeek - currentDayOfWeek;
-    if (currentDayOfWeek === 0) { // Sunday
+    
+    // Adjust for Sunday (day 0) - treat it as end of week (day 7)
+    if (currentDayOfWeek === 0) {
         daysToAdd = targetDayOfWeek === 0 ? 0 : targetDayOfWeek - 7;
+    }
+    
+    // Adjust for going backwards in the same week
+    if (daysToAdd < 0 && currentDayOfWeek !== 0) {
+        daysToAdd += 7;
     }
     
     const targetDate = new Date(today);
@@ -257,9 +265,18 @@ function saveWorkoutData(event) {
     const value = input.value;
     
     const storageKey = getStorageKey(day, exercise, date);
-    let workoutData = JSON.parse(localStorage.getItem(storageKey)) || { kg: '', reps: '', sets: '' };
-    workoutData[field] = value;
+    let workoutData = { kg: '', reps: '', sets: '' };
     
+    try {
+        const storedData = localStorage.getItem(storageKey);
+        if (storedData) {
+            workoutData = JSON.parse(storedData);
+        }
+    } catch (e) {
+        console.warn('Failed to parse stored workout data:', e);
+    }
+    
+    workoutData[field] = value;
     localStorage.setItem(storageKey, JSON.stringify(workoutData));
 }
 
@@ -267,7 +284,11 @@ function saveWorkoutData(event) {
 function getSavedWorkoutData(storageKey) {
     const data = localStorage.getItem(storageKey);
     if (data) {
-        return JSON.parse(data);
+        try {
+            return JSON.parse(data);
+        } catch (e) {
+            console.warn('Failed to parse stored workout data:', e);
+        }
     }
     return { kg: '', reps: '', sets: '' };
 }
