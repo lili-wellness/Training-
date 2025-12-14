@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 Workout Tracker</h1>
+            <div class="date-display" id="currentDate"></div>
+        </header>
+
+        <div class="week-navigation">
+            <button id="prevWeek" class="nav-btn">← Previous Week</button>
+            <span id="weekDisplay"></span>
+            <button id="nextWeek" class="nav-btn">Next Week →</button>
+        </div>
+
+        <div class="day-selector">
+            <button class="day-btn active" data-day="monday">Monday</button>
+            <button class="day-btn" data-day="tuesday">Tuesday</button>
+            <button class="day-btn" data-day="wednesday">Wednesday</button>
+            <button class="day-btn" data-day="thursday">Thursday</button>
+            <button class="day-btn" data-day="friday">Friday</button>
+            <button class="day-btn" data-day="saturday">Saturday</button>
+            <button class="day-btn" data-day="sunday">Sunday</button>
+        </div>
+
+        <div id="workoutContainer"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
